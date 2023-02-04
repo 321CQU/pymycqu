@@ -1,16 +1,16 @@
 from __future__ import annotations
 
 from typing import Dict, Any, Union, Optional
+
 from requests import Session
+from pydantic import BaseModel
 
 from ..tools import get_gpa_ranking_raw, async_get_gpa_ranking_raw
-from ..._lib_wrapper.dataclass import dataclass
 
 __all__ = ['GpaRanking']
 
 
-@dataclass
-class GpaRanking:
+class GpaRanking(BaseModel):
     """
     绩点对象
     """

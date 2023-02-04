@@ -1,12 +1,11 @@
 from typing import Dict, Any
 
-from ..._lib_wrapper.dataclass import dataclass
+from pydantic import BaseModel
 
 __all__ = ['RoomExamInvigilator']
 
 
-@dataclass
-class RoomExamInvigilator:
+class RoomExamInvigilator(BaseModel):
     """教室考试活动监考员信息"""
     name: str
     """姓名"""

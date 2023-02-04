@@ -1,14 +1,14 @@
 from typing import Dict, Any, List
 
-from ..._lib_wrapper.dataclass import dataclass
+from pydantic import BaseModel
+
 from .room_activity_info import RoomActivityInfo
 from .room_exam_invigilator import RoomExamInvigilator
 
 __all__ = ['RoomExam']
 
 
-@dataclass
-class RoomExam:
+class RoomExam(BaseModel):
     """教室中考试活动相关信息"""
     activity_info: RoomActivityInfo
     """基础信息"""

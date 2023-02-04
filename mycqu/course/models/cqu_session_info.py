@@ -4,10 +4,10 @@ from datetime import date
 from typing import Optional, Any, List
 
 from requests import Session
+from pydantic import BaseModel
 
 from .cqu_session import CQUSession
 from ...exception import MycquUnauthorized
-from ..._lib_wrapper.dataclass import dataclass
 from ...utils.datetimes import date_from_str
 from ...utils.request_transformer import Request, RequestTransformer
 
@@ -17,8 +17,7 @@ ALL_SESSIONSINFO_URL = "https://my.cqu.edu.cn/api/resourceapi/session/list"
 
 __all__ = ['CQUSessionInfo']
 
-@dataclass
-class CQUSessionInfo:
+class CQUSessionInfo(BaseModel):
     """某学期的一些额外信息
     """
     session: CQUSession

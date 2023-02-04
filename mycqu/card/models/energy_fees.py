@@ -3,17 +3,16 @@ from __future__ import annotations
 from typing import Optional, Any
 
 from requests import Session
+from pydantic import BaseModel
 
 from ..tools import get_fees_raw, async_get_fees_raw
 from ...utils.request_transformer import Request
-from ..._lib_wrapper.dataclass import dataclass
 
 
 __all__ = ['EnergyFees']
 
 
-@dataclass
-class EnergyFees:
+class EnergyFees(BaseModel):
     """
     某宿舍的水电费相关信息
     """

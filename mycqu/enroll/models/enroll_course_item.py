@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import List, Dict, Optional
 
+from pydantic import BaseModel
+
 from .enroll_course_timetable import EnrollCourseTimetable
 from ..tools import get_enroll_detail_raw, async_get_enroll_detail_raw
-from ..._lib_wrapper.dataclass import dataclass
 from ...course import Course
 
 from requests import Session
@@ -12,8 +13,7 @@ from requests import Session
 
 __all__ = ['EnrollCourseItem']
 
-@dataclass
-class EnrollCourseItem:
+class EnrollCourseItem(BaseModel):
     """
     可选具体课程，包含课程上课时间、上课教师、教室可容纳学生等信息
     """
@@ -39,7 +39,7 @@ class EnrollCourseItem:
     """所属校区，如D区，部分从属课程该值为`None`"""
     parent_id: Optional[str]
     """所从属具体课程id，如果不存在从属关系，该值为None"""
-    timetable: List[EnrollCourseTimetable]
+    timetables: List[EnrollCourseTimetable]
 
     @staticmethod
     def from_dict(data: Dict) -> EnrollCourseItem:
@@ -63,7 +63,7 @@ class EnrollCourseItem:
                      if data['childrenList'] else None,
             campus=data['campusShortName'],
             parent_id=data['parentClassId'],
-            timetable=EnrollCourseTimetable.from_str(data['classTime']) if data['classTime'] is not None else []
+            timetables=EnrollCourseTimetable.from_str(data['classTime']) if data['classTime'] is not None else []
         )
 
     @staticmethod

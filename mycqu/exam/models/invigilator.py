@@ -2,14 +2,12 @@ from __future__ import annotations
 
 from typing import Dict, Optional
 
-from ..._lib_wrapper.dataclass import dataclass
-from ..._lib_wrapper.encrypt import pad16, aes_ecb_encryptor
+from pydantic import BaseModel
 
 
 __all__ = ['Invigilator']
 
-@dataclass
-class Invigilator:
+class Invigilator(BaseModel):
     """监考员信息
     """
     name: str

@@ -3,19 +3,21 @@ from __future__ import annotations
 import re
 from typing import List, Optional, ClassVar, Tuple
 
-from ..._lib_wrapper.dataclass import dataclass
+from pydantic import BaseModel
+
 from ...course import CourseDayTime
 from ...utils.datetimes import parse_weekday_str, parse_period_str, parse_weeks_str
+from ...utils.period import Period
 
 
 __all__ = ['EnrollCourseTimetable']
 
-@dataclass
-class EnrollCourseTimetable:
+
+class EnrollCourseTimetable(BaseModel):
     """
     可选具体课程上课时间、上课地点信息
     """
-    weeks: List[Tuple[int, int]]
+    weeks: List[Period]
     """上课周数"""
     time: Optional[CourseDayTime]
     """上课时间"""

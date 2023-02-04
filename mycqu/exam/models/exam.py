@@ -3,19 +3,19 @@ from __future__ import annotations
 from typing import Dict, Any, Optional, List
 from datetime import date, time
 
+from pydantic import BaseModel
+
 from .invigilator import Invigilator
 from ..tools import get_exam_raw, async_get_exam_raw
 from ...course import Course
 from ...utils.datetimes import date_from_str, time_from_str
-from ..._lib_wrapper.dataclass import dataclass
 from ...utils.request_transformer import Request
 
 
 __all__ = ['Exam']
 
 
-@dataclass
-class Exam:
+class Exam(BaseModel):
     """考试信息
     """
     course: Course

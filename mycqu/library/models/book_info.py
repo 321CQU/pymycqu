@@ -3,20 +3,19 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, Optional, Tuple, List, Union, ClassVar
 
-from requests import Session, get
+from pydantic import BaseModel
+from requests import Session
 from datetime import date, datetime
 
 from ..tools import get_curr_books_raw, get_history_books_raw
 from ...utils.datetimes import date_from_str, datetime_from_str
-from ..._lib_wrapper.dataclass import dataclass
 
 RENEW_BOOK_URL = "http://lib.cqu.edu.cn/api/v1/user/renew"
 
 __all__ = ['BookInfo']
 
 
-@dataclass
-class BookInfo:
+class BookInfo(BaseModel):
     """
     图书馆书籍相关信息
     """

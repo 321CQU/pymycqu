@@ -1,14 +1,14 @@
 from __future__ import annotations
 from typing import Any, Dict, Optional, Union
 
-from ..._lib_wrapper.dataclass import dataclass
+from pydantic import BaseModel
+
 from .cqu_session import CQUSession
 
 
 __all__ = ['Course']
 
-@dataclass
-class Course:
+class Course(BaseModel):
     """与具体行课时间无关的课程信息
     """
     name: Optional[str]

@@ -3,22 +3,21 @@ from __future__ import annotations
 from typing import List
 
 from requests import Session
+from pydantic import BaseModel
 
 from .bill import Bill
 from ..tools import get_card_raw, get_bill_raw, async_get_card_raw, async_get_bill_raw
-from ..._lib_wrapper.dataclass import dataclass
 from ...utils.request_transformer import Request
 
 
 __all__ = ['Card']
 
 
-@dataclass
-class Card:
+class Card(BaseModel):
     """
     校园卡及其账单信息
     """
-    card_id: int
+    id: str
     """校园卡id"""
     amount: float
     """账户余额"""
@@ -37,7 +36,7 @@ class Card:
         card_info = get_card_raw(session)
 
         return Card(
-            card_id=int(card_info['acctNo']),
+            id=card_info['acctNo'],
             amount=float(card_info['acctAmt'] / 100)
         )
 
@@ -55,7 +54,7 @@ class Card:
         card_info = await async_get_card_raw(session)
 
         return Card(
-            card_id=int(card_info['acctNo']),
+            id=card_info['acctNo'],
             amount=float(card_info['acctAmt'] / 100)
         )
 
@@ -68,7 +67,7 @@ class Card:
         :return: 获取的校园卡账单信息
         :rtype: dict
         """
-        bill_info = get_bill_raw(session, self.card_id, 30)
+        bill_info = get_bill_raw(session, self.id, 30)
         bills = []
         for bill in bill_info:
             bills.append(Bill.from_dict(bill))
@@ -84,7 +83,7 @@ class Card:
         :return: 获取的校园卡账单信息
         :rtype: dict
         """
-        bill_info = await async_get_bill_raw(session, self.card_id, 30)
+        bill_info = await async_get_bill_raw(session, self.id, 30)
         bills = []
         for bill in bill_info:
             bills.append(Bill.from_dict(bill))

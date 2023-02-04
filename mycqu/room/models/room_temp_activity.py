@@ -2,15 +2,15 @@ from typing import List, Dict, Any
 
 from datetime import date
 
-from ..._lib_wrapper.dataclass import dataclass
+from pydantic import BaseModel
+
 from .room_activity_info import RoomActivityInfo
 from ...utils.datetimes import date_from_str
 
 __all__ = ['RoomTempActivity']
 
 
-@dataclass
-class RoomTempActivity:
+class RoomTempActivity(BaseModel):
     """教室临时活动"""
     activity_info: RoomActivityInfo
     """基础信息"""

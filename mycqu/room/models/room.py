@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 from requests import Session
+from pydantic import BaseModel
 
 from ...exception import MycquUnauthorized
-from ..._lib_wrapper.dataclass import dataclass
 from ...utils.request_transformer import Request, RequestTransformer
 
 ROOM_ID_URL = "https://my.cqu.edu.cn/api/resourceapi/room/roomName-filter"
@@ -13,8 +13,7 @@ ROOM_ID_URL = "https://my.cqu.edu.cn/api/resourceapi/room/roomName-filter"
 __all__ = ['Room']
 
 
-@dataclass
-class Room:
+class Room(BaseModel):
     """教室对象，储存了某个教室的相关信息"""
     id: int
     """教室id"""

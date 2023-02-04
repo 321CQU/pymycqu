@@ -4,19 +4,20 @@ from typing import Any, Dict, Optional, Tuple, List, Union
 
 from requests import Session
 
+from pydantic import BaseModel
+
 from .course import Course
 from .course_day_time import CourseDayTime
 from ..tools import get_course_raw, async_get_course_raw
-from ..._lib_wrapper.dataclass import dataclass
 from .cqu_session import CQUSession
 from ...utils.datetimes import parse_weeks_str
+from ...utils.period import Period
 from ...utils.request_transformer import Request
 
 
 __all__ = ['CourseTimetable']
 
-@dataclass
-class CourseTimetable:
+class CourseTimetable(BaseModel):
     """课表对象，一个对象存储有相同课程、相同行课节次和相同星期的一批行课安排
     """
     course: Course
@@ -25,7 +26,7 @@ class CourseTimetable:
     """学生数"""
     classroom: Optional[str]
     """行课地点，无则为 :obj:`None`"""
-    weeks: List[Tuple[int, int]]
+    weeks: List[Period]
     """行课周数，列表中每个元组 (a,b) 代表一个周数范围 a~b（包含 a, b），在单独的一周则有 b=a"""
     day_time: Optional[CourseDayTime]
     """行课的星期和节次，若时间是整周（如真实地占用整周的军训和某些实习、虚拟地使用一周的思修实践）

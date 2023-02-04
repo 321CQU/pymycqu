@@ -1,9 +1,9 @@
 from typing import Union, Optional, List, Dict, Any
 
 from requests import Session
+from pydantic import BaseModel
 
 from ...course.models import CQUSession
-from ..._lib_wrapper.dataclass import dataclass
 from .room import Room
 from .room_course import RoomCourse
 from .room_exam import RoomExam
@@ -14,8 +14,7 @@ from ...utils.request_transformer import Request
 __all__ = ['RoomTimetable']
 
 
-@dataclass
-class RoomTimetable:
+class RoomTimetable(BaseModel):
     course_timetable: List[RoomCourse]
     exam_timetable: List[RoomExam]
     temp_activity_timetable: List[RoomTempActivity]

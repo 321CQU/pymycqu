@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from typing import List, Dict, Any, Optional
 
+from pydantic import BaseModel
+
 from ..tools import get_enroll_list_raw, async_get_enroll_list_raw
-from ..._lib_wrapper.dataclass import dataclass
 from ...course import Course
 from ...utils.request_transformer import Request
 
@@ -11,8 +12,7 @@ from requests import Session
 
 __all__ = ['EnrollCourseInfo']
 
-@dataclass
-class EnrollCourseInfo:
+class EnrollCourseInfo(BaseModel):
     """
     可选课程信息
     """

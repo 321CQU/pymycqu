@@ -1,19 +1,19 @@
 from __future__ import annotations
 
 from typing import Any, Dict, Tuple, List
+from pydantic import BaseModel
 
-from ..._lib_wrapper.dataclass import dataclass
 from ...utils.datetimes import parse_period_str, parse_weeks_str
+from ...utils.period import Period
 
 __all__ = ['RoomActivityInfo']
 
 
-@dataclass
-class RoomActivityInfo:
+class RoomActivityInfo(BaseModel):
     """教室活动的公有属性"""
-    period: Tuple[int, int]
+    period: Period
     """占用节数"""
-    weeks: List[Tuple[int, int]]
+    weeks: List[Period]
     """行课周数，列表中每个元组 (a,b) 代表一个周数范围 a~b（包含 a, b），在单独的一周则有 b=a"""
     weekday: int
     """星期，0 为周一，6 为周日，此与 :attr:`datetime.date.day` 一致"""

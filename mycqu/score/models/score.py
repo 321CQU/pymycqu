@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 from typing import Dict, Any, Union, Optional, List
+
 from requests import Session
+from pydantic import BaseModel
 
 from ..tools import get_score_raw, async_get_score_raw
-from ..._lib_wrapper.dataclass import dataclass
 from ...course import Course, CQUSession
 
 __all__ = ['Score']
 
 
-@dataclass
-class Score:
+class Score(BaseModel):
     """
     成绩对象
     """

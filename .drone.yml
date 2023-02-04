@@ -1,0 +1,58 @@
+kind: pipeline
+type: ssh
+name: 同步pymycqu
+
+server:
+  host:
+    from_secret: ssh_host
+  user: root
+  ssh_key:
+    from_secret: ssh_key
+
+platform:
+  os: linux
+  arсh: amd64
+
+clone:
+  disable: true
+
+steps:
+- name: clone
+  commands:
+    - git config --global http.proxy http://127.0.0.1:7890
+    - git config --global https.proxy http://127.0.0.1:7890
+    - git clone https://github.com/ZhuLegend/pymycqu.git
+    - cd ./pymycqu
+    - git checkout _321CQU_custom
+    - cp -a -r -f ./mycqu/ /www/services/_321CQU_package/python_package/
+
+trigger:
+  branch:
+  - _321CQU_custom
+  event:
+  - push
+  - merge
+
+---
+kind: pipeline
+type: docker
+name: 通知
+
+clone:
+  disable: true
+
+steps:
+  - name: 钉钉通知
+    image: lddsb/drone-dingtalk-message
+    settings:
+      token:
+        from_secret: dingtalk_token
+      secret:
+        from_secret: dingtalk_sign
+      type: markdown
+      message_color: true
+      message_pic: true
+      sha_link: true
+
+depends_on:
+  - 同步pymycqu

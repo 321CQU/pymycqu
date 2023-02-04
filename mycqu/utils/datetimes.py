@@ -2,6 +2,8 @@ from typing import List, Tuple, Dict, Optional
 from datetime import date, time, datetime
 import pytz
 
+from ..utils.period import Period
+
 TIMEZONE = datetime.now(pytz.timezone("Asia/Shanghai")).tzinfo
 SHORT_WEEKDAY: Dict[str, int] = {
     "一": 0,
@@ -28,13 +30,13 @@ def time_from_str(string: str) -> time:
     return time(hour, minute, tzinfo=TIMEZONE)
 
 
-def parse_period_str(string: str) -> Tuple[int, int]:
+def parse_period_str(string: str) -> Period:
     period = tuple(map(int, string.split("-")))
     assert len(period) == 1 or len(period) == 2
-    return period[0], (period[1] if len(period) == 2 else period[0])
+    return Period(start=period[0], end=(period[1] if len(period) == 2 else period[0]))
 
 
-def parse_weeks_str(string: str) -> List[Tuple[int, int]]:
+def parse_weeks_str(string: str) -> List[Period]:
     return [parse_period_str(unit) for unit in string.split(',')]
 
 

@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import re
 from typing import ClassVar, Tuple, List, Optional
-from functools import lru_cache
 
 import requests
 from requests import Session
+from pydantic import BaseModel
 
-from ..._lib_wrapper.dataclass import dataclass
 from ...utils.request_transformer import Request, RequestTransformer
 
 CQUSESSIONS_URL = "https://my.cqu.edu.cn/api/timetable/optionFinder/session?blankOption=false"
@@ -15,8 +14,8 @@ CQUSESSIONS_URL = "https://my.cqu.edu.cn/api/timetable/optionFinder/session?blan
 
 __all__ = ['CQUSession']
 
-@dataclass(order=True, frozen=True)
-class CQUSession:
+
+class CQUSession(BaseModel):
     """重大的某一学期
     """
     year: int
@@ -26,10 +25,6 @@ class CQUSession:
     SESSION_RE: ClassVar = re.compile("^([0-9]{4})年?(春|秋)$")
     _SPECIAL_IDS: ClassVar[Tuple[int, ...]] = (
         239259, 102, 101, 103, 1028, 1029, 1030, 1032)  # 2015 ~ 2018
-
-    @lru_cache(maxsize=32)  # type: ignore
-    def __new__(cls, year: int, is_autumn: bool):  # pylint: disable=unused-argument
-        return super(CQUSession, cls).__new__(cls)
 
     def __str__(self):
         return str(self.year) + ('秋' if self.is_autumn else '春')

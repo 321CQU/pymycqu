@@ -3,15 +3,15 @@ from __future__ import annotations
 import datetime
 from typing import Any
 
+from pydantic import BaseModel
+
 from ...utils.datetimes import TIMEZONE
-from ..._lib_wrapper.dataclass import dataclass
 
 
 __all__ = ['Bill']
 
 
-@dataclass
-class Bill:
+class Bill(BaseModel):
     """
     某次消费账单信息
     """

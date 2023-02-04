@@ -3,21 +3,20 @@ from __future__ import annotations
 from typing import Generic
 
 from requests import Session
+from pydantic.generics import GenericModel
 
-from ..._lib_wrapper.dataclass import dataclass
 from ...exception import MycquUnauthorized
-from ...utils.request_transformer import Request, RequestTransformer
+from ...utils.request_transformer import Request
 
 __all__ = ["User",]
 
 
-@dataclass
-class User(Generic[Request]):
+class User(GenericModel, Generic[Request]):
     """用户信息"""
 
     name: str
     """姓名"""
-    uniform_id: str
+    id: str
     """统一身份认证号"""
     code: str
     """学工号"""
@@ -45,7 +44,7 @@ class User(Generic[Request]):
         return User(
             name=data["name"],
             code=data["code"],
-            uniform_id=data["username"],
+            id=data["username"],
             role=data["type"],
             email=data["email"],
             phone_number=data["phoneNumber"]
@@ -69,7 +68,7 @@ class User(Generic[Request]):
         return User(
             name=data["name"],
             code=data["code"],
-            uniform_id=data["username"],
+            id=data["username"],
             role=data["type"],
             email=data["email"],
             phone_number=data["phoneNumber"]

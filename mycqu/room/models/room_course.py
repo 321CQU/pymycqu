@@ -1,11 +1,11 @@
 from typing import Dict, Any
 
-from ..._lib_wrapper.dataclass import dataclass
+from pydantic import BaseModel
+
 from .room_activity_info import RoomActivityInfo
 
 
-@dataclass
-class RoomCourse:
+class RoomCourse(BaseModel):
     """教室课程活动"""
     activity_info: RoomActivityInfo
     """基础信息"""

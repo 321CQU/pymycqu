@@ -129,7 +129,7 @@ async def async_get_card_raw(session: Session):
     return await _get_card_raw.async_request(session)
 
 @RequestTransformer.register()
-def _get_bill_raw(session: Session, account: int, duration: int):
+def _get_bill_raw(session: Session, account: str, duration: int):
     url = 'http://card.cqu.edu.cn/NcReport/GetMyBill'
 
     end_date = datetime.datetime.now(tz=TIMEZONE)
@@ -148,7 +148,7 @@ def _get_bill_raw(session: Session, account: int, duration: int):
 
     return result['rows']
 
-def get_bill_raw(session: Session, account: int, duration: int):
+def get_bill_raw(session: Session, account: str, duration: int):
     """
     从card.cqu.edu.cn获取校园卡账单
 
@@ -163,7 +163,7 @@ def get_bill_raw(session: Session, account: int, duration: int):
     """
     return _get_bill_raw.sync_request(session, account, duration)
 
-async def async_get_bill_raw(session: Session, account: int, duration: int):
+async def async_get_bill_raw(session: Session, account: str, duration: int):
     """
     异步的从card.cqu.edu.cn获取校园卡账单
 
