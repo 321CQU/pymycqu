@@ -12,6 +12,10 @@ from ...utils.period import Period
 
 __all__ = ['EnrollCourseTimetable']
 
+WEEKS_RE = re.compile("^(.*)周")
+PERIOD_RE = re.compile("星期. [0-9]-[0-9]小节")
+POS_RE = re.compile("&(.*)$")
+
 
 class EnrollCourseTimetable(BaseModel):
     """
@@ -23,10 +27,6 @@ class EnrollCourseTimetable(BaseModel):
     """上课时间"""
     pos: Optional[str]
     """上课地点"""
-
-    WEEKS_RE: ClassVar = re.compile("^(.*)周")
-    PERIOD_RE: ClassVar = re.compile("星期. [0-9]-[0-9]小节")
-    POS_RE: ClassVar = re.compile("&(.*)$")
 
     @staticmethod
     def from_str(data: str) -> List[EnrollCourseTimetable]:
@@ -42,12 +42,12 @@ class EnrollCourseTimetable(BaseModel):
         result = []
 
         for item in items:
-            pos_str = EnrollCourseTimetable.POS_RE.search(item)
+            pos_str = POS_RE.search(item)
             pos = None
             if pos_str:
                 pos = pos_str.group().strip()[1:]
 
-            period_str = EnrollCourseTimetable.PERIOD_RE.search(item)
+            period_str = PERIOD_RE.search(item)
             timetable = None
             if period_str:
                 period_str = period_str.group()
@@ -58,7 +58,7 @@ class EnrollCourseTimetable(BaseModel):
 
             result.append(
                 EnrollCourseTimetable(
-                    weeks=parse_weeks_str(EnrollCourseTimetable.WEEKS_RE.search(item).group()[:-1]),
+                    weeks=parse_weeks_str(WEEKS_RE.search(item).group()[:-1]),
                     time=timetable,
                     pos=pos
                 )
