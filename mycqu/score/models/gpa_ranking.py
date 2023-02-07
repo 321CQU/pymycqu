@@ -16,17 +16,17 @@ class GpaRanking(BaseModel):
     """
     gpa: float
     """学生总绩点"""
-    majorRanking: Optional[int]
+    major_ranking: Optional[int]
     """专业排名"""
-    gradeRanking: Optional[int]
+    grade_ranking: Optional[int]
     """年级排名"""
-    classRanking: Optional[int]
+    class_ranking: Optional[int]
     """班级排名"""
-    weightedAvg: float
+    weighted_avg: float
     """加权平均分"""
-    minorWeightedAvg: Optional[float]
+    minor_weighted_avg: Optional[float]
     """辅修加权平均分"""
-    minorGpa: Optional[float]
+    minor_gpa: Optional[float]
     """辅修绩点"""
 
     @staticmethod
@@ -41,12 +41,12 @@ class GpaRanking(BaseModel):
         """
         return GpaRanking(
             gpa=float(data['gpa']),
-            majorRanking=data['majorRanking'] and int(data['majorRanking']),
-            gradeRanking=data['gradeRanking'] and int(data['gradeRanking']),
-            classRanking=data['classRanking'] and int(data['classRanking']),
-            weightedAvg=float(data['weightedAvg']),
-            minorWeightedAvg=data['minorWeightedAvg'] and float(data['minorWeightedAvg']),
-            minorGpa=data['minorGpa'] and float(data['minorGpa']),
+            major_ranking=data['majorRanking'] and int(data['majorRanking']),
+            grade_ranking=data['gradeRanking'] and int(data['gradeRanking']),
+            class_ranking=data['classRanking'] and int(data['classRanking']),
+            weighted_avg=float(data['weightedAvg']),
+            minor_weighted_avg=data['minorWeightedAvg'] and float(data['minorWeightedAvg']),
+            minor_gpa=data['minorGpa'] and float(data['minorGpa']),
         )
 
     @staticmethod

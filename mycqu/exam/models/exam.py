@@ -26,7 +26,7 @@ class Exam(BaseModel):
     """选课系统中考试批次的内部id"""
     building: str
     """考场楼栋"""
-    floor: int
+    floor: Optional[int]
     """考场楼层"""
     room: str
     """考场地点"""
@@ -67,7 +67,7 @@ class Exam(BaseModel):
             batch_id=data["batchId"],
             building=data["buildingName"],
             room=data["roomName"],
-            floor=data["floorNum"],
+            floor=data["floorNum"] if data["floorNum"] != "null" else None,
             date=date_from_str(data["examDate"]),
             start_time=time_from_str(data["startTime"]),
             end_time=time_from_str(data["endTime"]),
