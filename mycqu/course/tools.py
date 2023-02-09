@@ -20,9 +20,9 @@ def _get_course_raw(session: Request, code: str, cqu_session: Optional[Union[CQU
         cqu_session = CQUSession.from_str(cqu_session)
     assert isinstance(cqu_session, CQUSession)
     resp = yield session.post(TIMETABLE_URL,
-                        params={"sessionId": cqu_session.get_id()},
-                        json=[code],
-                        )
+                              params={"sessionId": (yield cqu_session._get_id)},
+                              json=[code],
+                              )
     if resp.status_code == 401:
         raise MycquUnauthorized()
     result = resp.json().get('classTimetableVOList')

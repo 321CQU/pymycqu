@@ -1,8 +1,8 @@
 from typing import Callable
 from .utils.request_transformer.models import Response
-__all__ = ["CQUWebsiteError", "NotAllowedService", "NeedCaptcha", "InvaildCaptcha",
+__all__ = ["MycquException", "CQUWebsiteError", "NotAllowedService", "NeedCaptcha", "InvaildCaptcha",
            "IncorrectLoginCredentials", "TicketGetError", "ParseError", "MycquUnauthorized",
-           "UnknownAuthserverException", "NotLogined", "MultiSessionConflict", "InvalidRoom"]
+           "UnknownAuthserverException", "NotLogined", "MultiSessionConflict", "InvalidRoom", "CQUSessionIdNotExist"]
 
 class MycquException(Exception):
     pass
@@ -94,3 +94,9 @@ class InvalidRoom(MycquException):
 
     def __init__(self):
         super().__init__("Invalid Room Name")
+
+
+class CQUSessionIdNotExist(MycquException):
+    """CQUSession不存在对应Session ID"""
+    def __init__(self):
+        super().__init__("CQUSession不存在对应Session ID")

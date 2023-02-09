@@ -36,12 +36,15 @@ class CQUSessionInfo(BaseModel):
         :return: 学期信息对象
         :rtype: CQUSessionInfo
         """
-        return CQUSessionInfo(
+        res = CQUSessionInfo(
             session=CQUSession(year=data["year"],
                                is_autumn=data["term"] == "秋"),
             begin_date=date_from_str(data["beginDate"]),
             end_date=date_from_str(data["endDate"])
         )
+        res.session.id = int(data["id"])
+
+        return res
 
     @staticmethod
     @RequestTransformer.register()

@@ -8,10 +8,10 @@ from requests import Session
 from pydantic import BaseModel
 
 from ...utils.request_transformer import Request, RequestTransformer
+from ...exception import CQUSessionIdNotExist
 
 CQUSESSIONS_URL = "https://my.cqu.edu.cn/api/timetable/optionFinder/session?blankOption=false"
 SESSION_RE = re.compile("^([0-9]{4})年?(春|秋)$")
-_SPECIAL_IDS: Tuple[int, ...] = (239259, 102, 101, 103, 1028, 1029, 1030, 1032)  # 2015 ~ 2018
 
 
 __all__ = ['CQUSession']
@@ -20,6 +20,8 @@ __all__ = ['CQUSession']
 class CQUSession(BaseModel):
     """重大的某一学期
     """
+    id: Optional[int]
+    """学期ID"""
     year: int
     """主要行课年份"""
     is_autumn: bool
@@ -28,25 +30,28 @@ class CQUSession(BaseModel):
     def __str__(self):
         return str(self.year) + ('秋' if self.is_autumn else '春')
 
-    def get_id(self) -> int:
-        """获取该学期在 my.cqu.edu.cn 中的 id
-
-        >>> CQUSession(2021, True).get_id()
-        1038
-
-        :return: 学期的 id
-        :rtype: int
-        """
-        if self.year >= 2019:
-            return (self.year - 1503) * 2 + int(self.is_autumn) + 1
-        elif 2015 <= self.year <= 2018:
-            return _SPECIAL_IDS[(self.year - 2015) * 2 + int(self.is_autumn)]
+    @RequestTransformer.register()
+    def _get_id(self, client: Request) -> int:
+        if self.id is not None:
+            return self.id
         else:
-            return (2015 - self.year) * 2 - int(self.is_autumn)
+            sessions: List[CQUSession] = yield self._fetch
+            res = list(filter(lambda x: x.year == self.year and x.is_autumn == self.is_autumn, sessions))
+            if len(res) == 0:
+                raise CQUSessionIdNotExist
+            else:
+                return res[0].id
+
+    def get_id(self, client: Request) -> int:
+        return self._get_id.sync_request(client)
+
+    async def async_get_id(self, client: Request) -> int:
+        return self._get_id.async_request(client)
 
     @staticmethod
-    def from_str(string: str) -> CQUSession:
-        """从学期字符串中解析学期
+    def from_str(string: str, id: Optional[int] = None) -> CQUSession:
+        """
+        从学期字符串中解析学期，如果直接调用该方法，在获取id时会自动进行一次网络请求
 
         >>> CQUSession.from_str("2021春")
         CQUSession(year=2021, is_autumn=False)
@@ -55,16 +60,20 @@ class CQUSession(BaseModel):
 
         :param string: 学期字符串，如“2021春”、“2020年秋”
         :type string: str
+        :param id: 学期id，应交由CQUSession方法自动设置
+        :type id: Optional[int]
         :raises ValueError: 字符串不是一个预期中的学期字符串时抛出
         :return: 对应的学期
         :rtype: CQUSession
         """
         match = SESSION_RE.match(string)
         if match:
-            return CQUSession(
+            result = CQUSession(
                 year=match[1],
                 is_autumn=match[2] == "秋"
             )
+            result.id = id
+            return result
         else:
             raise ValueError(f"string {string} is not a session")
 
@@ -73,7 +82,7 @@ class CQUSession(BaseModel):
     def _fetch(request: Request) -> List[CQUSession]:
         session_list = []
         for session in (yield request.get(CQUSESSIONS_URL)).json():
-            session_list.append(CQUSession.from_str(session["name"]))
+            session_list.append(CQUSession.from_str(session["name"], int(session["id"])))
         return session_list
 
     @staticmethod
