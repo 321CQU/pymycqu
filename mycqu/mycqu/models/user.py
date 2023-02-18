@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Generic
+from typing import Generic, Optional
 
 from requests import Session
 from pydantic.generics import GenericModel
@@ -22,9 +22,9 @@ class User(GenericModel, Generic[Request]):
     """学工号"""
     role: str
     """身份，已知取值有学生 :obj:`"student"`、教师 :obj:`"instructor`"`"""
-    email: str
+    email: Optional[str]
     "电子邮箱"
-    phone_number: str
+    phone_number: Optional[str]
     "电话号码"
 
     @staticmethod
