@@ -15,11 +15,11 @@ class Bill(BaseModel):
     """
     某次消费账单信息
     """
-    tran_name: str
+    name: str
     """交易名称"""
-    tran_date: datetime.datetime
+    date: datetime.datetime
     """交易时间"""
-    tran_place: str
+    place: str
     """交易地点"""
     tran_amount: float
     """交易金额"""
@@ -37,10 +37,10 @@ class Bill(BaseModel):
         :rtype: Bill
         """
         return Bill(
-            tran_name=data['tranName'],
-            tran_date=datetime.datetime.strptime(
+            name=data['tranName'],
+            date=datetime.datetime.strptime(
                 data['tranDt'], "%Y-%m-%d %H:%M:%S").replace(tzinfo=TIMEZONE),
-            tran_place=data['mchAcctName'],
+            place=data['mchAcctName'],
             tran_amount=float(data['tranAmt'] / 100),
             acc_amount=float(int(data['acctAmt']) / 100)
         )
