@@ -18,7 +18,7 @@ class BookInfo(BaseModel):
     """
     图书馆书籍相关信息
     """
-    id: Optional[int]
+    id: Optional[int] = None
     """书籍id"""
     title: str
     """书籍名称"""
@@ -28,11 +28,11 @@ class BookInfo(BaseModel):
     """所属图书馆（如虎溪图书馆自然科学阅览室等）"""
     borrow_time: datetime
     """借出时间"""
-    should_return_time: Optional[date]
+    should_return_time: Optional[date] = None
     """应归还日期"""
     is_return: bool
     """是否被归还"""
-    return_time: Optional[date]
+    return_time: Optional[date] = None
     """归还时间"""
     renew_count: int
     """续借次数"""

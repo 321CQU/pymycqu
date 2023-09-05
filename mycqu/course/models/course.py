@@ -11,19 +11,19 @@ __all__ = ['Course']
 class Course(BaseModel):
     """与具体行课时间无关的课程信息
     """
-    name: Optional[str]
+    name: Optional[str] = None
     """课程名称"""
-    code: Optional[str]
+    code: Optional[str] = None
     """课程代码"""
-    course_num: Optional[str]
+    course_num: Optional[str] = None
     """教学班号，在无法获取时（如考表 :class:`.exam.Exam` 中）设为 :obj:`None`"""
-    dept: Optional[str]
+    dept: Optional[str] = None
     """开课学院， 在无法获取时（如成绩 :class:`.score.Score`中）设为 :obj:`None`"""
-    credit: Optional[float]
+    credit: Optional[float] = None
     """学分，无法获取到则为 :obj:`None`（如在考表 :class:`.exam.Exam` 中）"""
-    instructor: Optional[str]
+    instructor: Optional[str] = None
     """教师"""
-    session: Optional[CQUSession]
+    session: Optional[CQUSession] = None
     """学期，无法获取时则为 :obj:`None`"""
 
     @staticmethod

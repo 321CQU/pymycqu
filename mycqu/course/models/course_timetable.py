@@ -22,18 +22,18 @@ class CourseTimetable(BaseModel):
     """
     course: Course
     """对应的课程"""
-    stu_num: Optional[int]
+    stu_num: Optional[int] = None
     """学生数"""
-    classroom: Optional[str]
+    classroom: Optional[str] = None
     """行课地点，无则为 :obj:`None`"""
     weeks: List[Period]
     """行课周数，列表中每个元组 (a,b) 代表一个周数范围 a~b（包含 a, b），在单独的一周则有 b=a"""
-    day_time: Optional[CourseDayTime]
+    day_time: Optional[CourseDayTime] = None
     """行课的星期和节次，若时间是整周（如真实地占用整周的军训和某些实习、虚拟地使用一周的思修实践）
     则为 :obj:`None`"""
     whole_week: bool
     """是否真实地占用整周（如军训和某些实习是真实地占用、思修实践是“虚拟地占用”）"""
-    classroom_name: Optional[str]
+    classroom_name: Optional[str] = None
     """行课教室名称"""
     expr_projects: List[str]
     """实验课各次实验内容"""

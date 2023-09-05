@@ -20,7 +20,7 @@ __all__ = ['CQUSession']
 class CQUSession(BaseModel):
     """重大的某一学期
     """
-    id: Optional[int]
+    id: Optional[int] = None
     """学期ID"""
     year: int
     """主要行课年份"""

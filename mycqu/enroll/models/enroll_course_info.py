@@ -24,7 +24,7 @@ class EnrollCourseInfo(BaseModel):
     """可选课程类型，如：公共基础课，主修专业课，非限制选修课等"""
     type: str
     """课程类别，如：主修专业课，通识教育课程等"""
-    enroll_sign: Optional[str]
+    enroll_sign: Optional[str] = None
     """选课标识，如：已选，已选满等，当为 :obj:`None` 时标识无相关标记"""
     course_nature: str
     """课程属性，如必修，选修等"""

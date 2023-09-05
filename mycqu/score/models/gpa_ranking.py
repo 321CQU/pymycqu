@@ -16,17 +16,17 @@ class GpaRanking(BaseModel):
     """
     gpa: float
     """学生总绩点"""
-    major_ranking: Optional[int]
+    major_ranking: Optional[int] = None
     """专业排名"""
-    grade_ranking: Optional[int]
+    grade_ranking: Optional[int] = None
     """年级排名"""
-    class_ranking: Optional[int]
+    class_ranking: Optional[int] = None
     """班级排名"""
     weighted_avg: float
     """加权平均分"""
-    minor_weighted_avg: Optional[float]
+    minor_weighted_avg: Optional[float] = None
     """辅修加权平均分"""
-    minor_gpa: Optional[float]
+    minor_gpa: Optional[float] = None
     """辅修绩点"""
 
     @staticmethod

@@ -3,15 +3,15 @@ from __future__ import annotations
 from typing import Generic, Optional
 
 from requests import Session
-from pydantic.generics import GenericModel
 
 from ...exception import MycquUnauthorized
 from ...utils.request_transformer import Request
+from pydantic import BaseModel
 
 __all__ = ["User",]
 
 
-class User(GenericModel, Generic[Request]):
+class User(BaseModel, Generic[Request]):
     """用户信息"""
 
     name: str

@@ -26,7 +26,7 @@ class Exam(BaseModel):
     """选课系统中考试批次的内部id"""
     building: str
     """考场楼栋"""
-    floor: Optional[int]
+    floor: Optional[int] = None
     """考场楼层"""
     room: str
     """考场地点"""
@@ -48,7 +48,7 @@ class Exam(BaseModel):
     """考生座号"""
     chief_invi: List[Invigilator]
     """监考员"""
-    asst_invi: Optional[List[Invigilator]]
+    asst_invi: Optional[List[Invigilator]] = None
     """副监考员"""
 
     @staticmethod

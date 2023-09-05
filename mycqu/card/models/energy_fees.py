@@ -18,11 +18,11 @@ class EnergyFees(BaseModel):
     """
     balance: float
     """账户余额"""
-    electricity_subsidy: Optional[float]
+    electricity_subsidy: Optional[float] = None
     """电剩余补助（仅虎溪校区拥有）"""
-    water_subsidy: Optional[float]
+    water_subsidy: Optional[float] = None
     """水剩余补助（仅虎溪校区拥有）"""
-    subsidies: Optional[float]
+    subsidies: Optional[float] = None
     """补助余额（仅老校区拥有）"""
 
     @staticmethod

@@ -19,7 +19,7 @@ class Score(BaseModel):
     """学期"""
     course: Course
     """课程"""
-    score: Optional[str]
+    score: Optional[str] = None
     """成绩，可能为数字，也可能为字符（优、良等）"""
     study_nature: str
     """初修/重修"""

@@ -23,9 +23,9 @@ class EnrollCourseTimetable(BaseModel):
     """
     weeks: List[Period]
     """上课周数"""
-    time: Optional[CourseDayTime]
+    time: Optional[CourseDayTime] = None
     """上课时间"""
-    pos: Optional[str]
+    pos: Optional[str] = None
     """上课地点"""
 
     @staticmethod

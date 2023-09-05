@@ -17,27 +17,27 @@ class EnrollCourseItem(BaseModel):
     """
     可选具体课程，包含课程上课时间、上课教师、教室可容纳学生等信息
     """
-    id: Optional[str]
+    id: Optional[str] = None
     """可选具体课程id，每个可选具体课程具有唯一id，部分从属课程该值为`None`"""
-    session_id: Optional[str]
+    session_id: Optional[str] = None
     """可选具体课程所在学期ID，部分从属课程该值为`None`"""
-    checked: Optional[bool]
+    checked: Optional[bool] = None
     """是否已经选择该课程，部分从属课程该值为`None`"""
-    course_id: Optional[str]
+    course_id: Optional[str] = None
     """该具体课程所属课程ID，部分从属课程该值为`None`"""
     course: Course
     """课程信息"""
     type: str
     """具体课程类别，如：理论、实验"""
-    selected_num: Optional[int]
+    selected_num: Optional[int] = None
     """已选课程学生，部分从属课程该值为`None`"""
-    capacity: Optional[int]
+    capacity: Optional[int] = None
     """该课程容量上限，部分从属课程该值为`None`"""
-    children: Optional[List[EnrollCourseItem]]
+    children: Optional[List[EnrollCourseItem]] = None
     """该课程从属课程列表，一般为理论课程的实验课"""
-    campus: Optional[str]
+    campus: Optional[str] = None
     """所属校区，如D区，部分从属课程该值为`None`"""
-    parent_id: Optional[str]
+    parent_id: Optional[str] = None
     """所从属具体课程id，如果不存在从属关系，该值为None"""
     timetables: List[EnrollCourseTimetable]
 
