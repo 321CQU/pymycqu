@@ -20,7 +20,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2"
-pydantic = "^1"
+pydantic = "^2"
 pycryptodome = {version = "^3", optional = true}
 pycryptodomex = "^3"
 pytz = "*"
