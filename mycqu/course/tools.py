@@ -7,7 +7,7 @@ from .models.cqu_session_info import CQUSessionInfo
 from ..exception import MycquUnauthorized
 from ..utils.request_transformer import Request, RequestTransformer
 
-TIMETABLE_URL = "https://my.cqu.edu.cn/api/timetable/class/timetable/student/table-detail"
+TIMETABLE_URL = "https://my.cqu.edu.cn/api/timetable/class/timetable/student/my-table-detail"
 
 __all__ = ['get_course_raw', 'async_get_course_raw', 'get_enroll_raw', 'async_get_enroll_raw']
 
