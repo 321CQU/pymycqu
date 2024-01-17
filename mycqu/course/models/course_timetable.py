@@ -101,32 +101,28 @@ class CourseTimetable(BaseModel):
                 ]
 
     @staticmethod
-    def fetch_enroll(session: Request, code: str) -> List[CourseTimetable]:
+    def fetch_enroll(session: Request) -> List[CourseTimetable]:
         """从 my.cqu.edu.cn 上获取学生已选课程
 
         :param session: 登录了统一身份认证（:func:`.auth.login`）并在 mycqu 进行了认证（:func:`.mycqu.access_mycqu`）的 requests 会话
         :type session: Session
-        :param code: 学生学号
-        :type code: str
         :raises MycquUnauthorized: 若会话未在 my.cqu.edu.cn 进行认证
         :return: 获取的课表对象的列表
         :rtype: List[CourseTimetable]
         """
-        res = get_enroll_raw(session, code)
+        res = get_enroll_raw(session)
         return [CourseTimetable.from_dict(timetable) for timetable in res]
 
     @staticmethod
-    async def async_fetch_enroll(session: Request, code: str) -> List[CourseTimetable]:
+    async def async_fetch_enroll(session: Request) -> List[CourseTimetable]:
         """
         异步的从 my.cqu.edu.cn 上获取学生已选课程
 
         :param session: 登录了统一身份认证（:func:`.auth.login`）并在 mycqu 进行了认证（:func:`.mycqu.access_mycqu`）的 requests 会话
         :type session: Session
-        :param code: 学生学号
-        :type code: str
         :raises MycquUnauthorized: 若会话未在 my.cqu.edu.cn 进行认证
         :return: 获取的课表对象的列表
         :rtype: List[CourseTimetable]
         """
-        res = await async_get_enroll_raw(session, code)
+        res = await async_get_enroll_raw(session)
         return [CourseTimetable.from_dict(timetable) for timetable in res]

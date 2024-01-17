@@ -29,8 +29,8 @@ def _get_course_raw(session: Request, code: str, cqu_session: Optional[Union[CQU
     return result if result is not None else []
 
 @RequestTransformer.register()
-def _get_enroll_raw(session: Request, code: str):
-    res = yield session.get(f'https://my.cqu.edu.cn/api/enrollment/timetable/student/{code}')
+def _get_enroll_raw(session: Request):
+    res = yield session.get(f'https://my.cqu.edu.cn/api/enrollment/timetable/student')
     result = res.json().get('data')
     return result if result is not None else []
 
@@ -65,30 +65,26 @@ async def async_get_course_raw(session: Request, code: str, cqu_session: Optiona
     """
     return await _get_course_raw.async_request(session, code, cqu_session)
 
-def get_enroll_raw(session: Request, code: str):
+def get_enroll_raw(session: Request):
     """
     从 my.cqu.edu.cn 上获取学生的选课信息
 
     :param session: 登录了统一身份认证（:func:`.auth.login`）并在 mycqu 进行了认证（:func:`.mycqu.access_mycqu`）的 requests 会话
     :type session: Session
-    :param code: 学生或教师的学工号
-    :type code: str
     :raises MycquUnauthorized: 若会话未在 my.cqu.edu.cn 进行认证
     :return: 反序列化获取课表的json
     :rtype: dict
     """
-    return _get_enroll_raw.sync_request(session, code)
+    return _get_enroll_raw.sync_request(session)
 
-async def async_get_enroll_raw(session: Request, code: str):
+async def async_get_enroll_raw(session: Request):
     """
     异步的从 my.cqu.edu.cn 上获取学生的选课信息
 
     :param session: 登录了统一身份认证（:func:`.auth.login`）并在 mycqu 进行了认证（:func:`.mycqu.access_mycqu`）的 requests 会话
     :type session: Session
-    :param code: 学生或教师的学工号
-    :type code: str
     :raises MycquUnauthorized: 若会话未在 my.cqu.edu.cn 进行认证
     :return: 反序列化获取课表的json
     :rtype: dict
     """
-    return await _get_enroll_raw.async_request(session, code)
+    return await _get_enroll_raw.async_request(session)
