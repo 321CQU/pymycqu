@@ -13,6 +13,7 @@ from ...utils.request_transformer import Request, RequestTransformer
 
 CUR_SESSION_URL = "https://my.cqu.edu.cn/api/resourceapi/session/cur-active-session"
 ALL_SESSIONSINFO_URL = "https://my.cqu.edu.cn/api/resourceapi/session/list"
+SESSION_DETAIL_URL = "https://my.cqu.edu.cn/api/resourceapi/session/detail/"
 
 
 __all__ = ['CQUSessionInfo']
@@ -39,8 +40,8 @@ class CQUSessionInfo(BaseModel):
         res = CQUSessionInfo(
             session=CQUSession(year=data["year"],
                                is_autumn=data["term"] == "秋"),
-            begin_date=date_from_str(data["beginDate"]),
-            end_date=date_from_str(data["endDate"])
+            begin_date=date_from_str(data["beginDate"][0:10] if data["beginDate"] else None),
+            end_date=date_from_str(data["endDate"][0:10] if data["endDate"] else None)
         )
         res.session.id = int(data["id"])
 
@@ -84,11 +85,50 @@ class CQUSessionInfo(BaseModel):
 
     @staticmethod
     @RequestTransformer.register()
+    def _fetch_detail(session: Request, cqu_session: CQUSession) -> CQUSessionInfo:
+        if cqu_session.id is None:
+            raise ValueError("cqu_session.id should not be None")
+        resp = yield session.get(SESSION_DETAIL_URL + str(cqu_session.id))
+        if resp.status_code == 401:
+            raise MycquUnauthorized()
+        return CQUSessionInfo.from_dict(resp.json()["data"])
+
+    @staticmethod
+    def fetch_detail(session: Session, cqu_session: CQUSession) -> CQUSessionInfo:
+        """获取指定学期的详细信息
+
+        :param session: 登录了统一身份认证（:func:`.auth.login`）并在 mycqu 进行了认证（:func:`.mycqu.access_mycqu`）的 requests 会话
+        :type session: Session
+        :param cqu_session: 指定的学期
+        :type cqu_session: CQUSession
+        :return: 学期详细信息
+        :rtype: CQUSessionInfo
+        """
+        return CQUSessionInfo._fetch_detail.sync_request(session, cqu_session)
+
+    @staticmethod
+    async def async_fetch_detail(session: Request, cqu_session: CQUSession) -> CQUSessionInfo:
+        """
+        异步的获取指定学期的详细信息
+
+        :param session: 登录了统一身份认证（:func:`.auth.login`）并在 mycqu 进行了认证（:func:`.mycqu.access_mycqu`）的 requests 会话
+        :type session: Session
+        :param cqu_session: 指定的学期
+        :type cqu_session: CQUSession
+        :return: 学期详细信息
+        :rtype: CQUSessionInfo
+        """
+        return await CQUSessionInfo._fetch_detail.async_request(session, cqu_session)
+
+    @staticmethod
+    @RequestTransformer.register()
     def _fetch(session: Request) -> CQUSessionInfo:
         resp = yield session.get(CUR_SESSION_URL)
         if resp.status_code == 401:
             raise MycquUnauthorized()
-        return CQUSessionInfo.from_dict(resp.json()["data"])
+        session_info = CQUSessionInfo.from_dict(resp.json()["data"])
+        resp = yield (CQUSessionInfo._fetch_detail, {"cqu_session": session_info.session})
+        return resp
 
     @staticmethod
     def fetch(session: Session) -> CQUSessionInfo:
