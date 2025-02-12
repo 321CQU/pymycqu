@@ -13,7 +13,7 @@ from ..utils.request_transformer import Request, RequestTransformer
 __all__ = ['get_exam_raw', 'async_get_exam_raw']
 
 __exam_encryptor = aes_ecb_encryptor("cquisse123456789".encode())
-EXAM_LIST_URL = "https://my.cqu.edu.cn/api/exam/examTask/get-student-exam-list-outside"
+EXAM_LIST_URL = "https://my.cqu.edu.cn/api/exam/examTask/get-student-exam-tab-list"
 
 
 @RequestTransformer.register()

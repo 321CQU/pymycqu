@@ -85,25 +85,29 @@ class Exam(BaseModel):
         )
 
     @staticmethod
-    def fetch(student_id: str) -> List[Exam]:
+    def fetch(session: Request, student_id: str) -> List[Exam]:
         """从 my.cqu.edu.cn 上获取指定学生的考表
 
+        :param session: 登陆后获取的 authorization 或者调用过 :func:`.mycqu.access_mycqu` 的 Session
+        :type session: Request
         :param student_id: 学生学号
         :type student_id: str
         :return: 本学期的考表
         :rtype: List[Exam]
         """
         return [Exam.from_dict(exam)
-                for exam in get_exam_raw(student_id)["data"]["content"]]
+                for exam in get_exam_raw(student_id, session)["data"]]
 
     @staticmethod
     async def async_fetch(session: Request, student_id: str) -> List[Exam]:
         """从 my.cqu.edu.cn 上获取指定学生的考表
 
+        :param session: 登陆后获取的 authorization 或者调用过 :func:`.mycqu.access_mycqu` 的 Session
+        :type session: Request
         :param student_id: 学生学号
         :type student_id: str
         :return: 本学期的考表
         :rtype: List[Exam]
         """
         return [Exam.from_dict(exam)
-                for exam in (await async_get_exam_raw(session, student_id))["data"]["content"]]
+                for exam in (await async_get_exam_raw(session, student_id))["data"]]
