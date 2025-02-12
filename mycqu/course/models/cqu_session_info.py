@@ -126,9 +126,7 @@ class CQUSessionInfo(BaseModel):
         resp = yield session.get(CUR_SESSION_URL)
         if resp.status_code == 401:
             raise MycquUnauthorized()
-        session_info = CQUSessionInfo.from_dict(resp.json()["data"])
-        resp = yield (CQUSessionInfo._fetch_detail, {"cqu_session": session_info.session})
-        return resp
+        return CQUSessionInfo.from_dict(resp.json()["data"])
 
     @staticmethod
     def fetch(session: Session) -> CQUSessionInfo:
